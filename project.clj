@@ -28,7 +28,7 @@
                            :source-map-timestamp true}}
                {:id "min"
                 :source-paths ["src"]
-                :compiler {:output-to "resources/public/js/compiled/sam_brink.js"
+                :compiler {:output-to "resources/public/js/sam_brink.min.js"
                            :main sam-brink.core
                            :optimizations :advanced
                            :pretty-print false}}]}

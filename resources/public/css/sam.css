@@ -1,0 +1,15 @@
+.container-page-inner.active {
+    transition: opacity 0.5s linear;
+    opacity: 1;
+    width: auto;
+    height: auto;
+    visibility: visible;
+}
+
+.container-page-inner {
+    transition: visibility 0s 0.5s, opacity 0.5s linear;
+    opacity: 0;
+    width: 0px;
+    height: 0px;
+    visibility: hidden;
+}

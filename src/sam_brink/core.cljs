@@ -1,5 +1,7 @@
 (ns sam-brink.core
-  (:require [rum.core :as rum]))
+  (:require [rum.core :as rum]
+            [clojure.string :as str]
+            [sam-brink.util :as util]))
 
 (enable-console-print!)
 
@@ -7,40 +9,39 @@
   [{:id          1
     :title       "Hand"
     :image       "hand.png"
-    :description "My logo"}
+    :description (util/random-str 5)}
    {:id          2
     :title       "Leather book"
     :image       "leather_book.jpg"
-    :description "Hand made leather book, that I am making myself."}
+    :description (util/random-str 5)}
    {:id          3
     :title       "Outdoor"
     :image       "outdoor.jpg"
-    :description "Picture of a bike next to a peach house, in Zanzibar."}
+    :description (util/random-str 5)}
    {:id          4
     :title       "Personal book"
     :image       "book.jpg"
-    :description "This is a book of my lino pictures."}])
+    :description (util/random-str 5)}])
 
 (def state
   {:projects         projects
    :featured-project (nth projects 2)})
 
-(defn static-image [path]
-  (str "/img/" path))
-
 (rum/defc project-listing [db]
-  [:h1.subtitle "Projects"]
-  [:.columns
-   (for [{:keys [id image description title]} (:projects db)]
-     [:.column {:key id}
-      [:.card
-       [:.card-image
-        [:figure {:class ["image" "is-4x2"]}
-         [:img {:src (static-image image)}]]]
-       [:.card-content
-        [:h1.title title]
-        [:.content description]
-        [:a.button.is-warning.more-info-button "Info"]]]])])
+  [:.container
+   [:.content.has-text
+    (util/random-str 20)]
+   [:.columns
+    (for [{:keys [id image description title]} (:projects db)]
+      [:.column {:key id}
+       [:.card
+        [:.card-image
+         [:figure {:class ["image" "is-4x2"]}
+          [:img {:src (util/static-image image)}]]]
+        [:.card-content
+         [:h1.title title]
+         [:.content description]
+         [:a.button.is-warning.more-info-button "Info"]]]])]])
 
 (rum/defc featured-project [db]
   (let [{:keys [title image
@@ -48,46 +49,47 @@
     [:section.hero
      [:.hero.hero-body
       [:.container
-       [:h1.title.hero-title title]
        [:.hero-image
         [:figure {:class ["image" "is-4by2"]}
-         [:img {:src (static-image image)}]]
+         [:img {:src (util/static-image image)}]]
         [:.hero-image-caption
          [:p.small image-caption]]]
+       [:h2.title.hero-title title]
+       [:h5.subtitle "Featured project"]
        [:.subtitle.hero-description
         [:p description]]]]]))
 
-(rum/defc navigation [db]
+(rum/defc navigation [db *page]
   [:.navbar
-   [:.navbar-brand
-    [:a.navbar-item
-     [:img {:class ["image" "is-4x2"]
-            :src   (static-image "hand.png")}]]
-    [:.navbar-item
-     [:.navbar-link "Projects"]]
-    [:.navbar-item
-     [:.navbar-link "Featured"]]
-    [:.navbar-item
-     [:.navbar-link "CV"]]
-    [:.navbar-item
-     [:.navbar-link "Contact"]]]])
-
-(defn random-str [n]
-  (->> (take n (cycle ["Lorem ipsum doelm mit ex zit muipet"]))
-       (apply str)))
+   (let [change-page-fn (fn [page]
+                          #(reset! *page page))]
+     [:.navbar-brand
+      [:a.navbar-item
+       {:on-click (change-page-fn ::home)}
+       [:img {:class ["image" "is-4x2"]
+              :src   (util/static-image "hand.png")}]]
+      [:a.navbar-item
+       {:on-click (change-page-fn ::projects)}
+       "Projects"]
+      [:a.navbar-item
+       {:on-click (change-page-fn ::about-me)}
+       "About me"]
+      [:a.navbar-item.is-active
+       {:on-click (change-page-fn ::contact-me)}
+       "Contact"]])])
 
 (rum/defc about-me [db]
   [:.container
    [:h2 "My story"]
-   [:p (random-str 12)]
+   [:p (util/random-str 12)]
    [:figure {:class ["image" "is-4by2"]}
-    [:img {:src (static-image "triple_print_mock.jpg")}]]
+    [:img {:src (util/static-image "triple_print_mock.jpg")}]]
    [:h3 "How it started"]
-   [:p (random-str 4)]
+   [:p (util/random-str 4)]
    [:figure {:class ["image" "is-2by1"]}
-    [:img {:src (static-image "outdoor.jpg")}]]
+    [:img {:src (util/static-image "outdoor.jpg")}]]
    [:h3 "What I am doing now"]
-   [:p (random-str 8)]])
+   [:p (util/random-str 8)]])
 
 (rum/defc contact-me [db]
   [:.container
@@ -119,23 +121,31 @@
      [:.control
       [:button.button.is-text "Cancel"]]]]])
 
-(rum/defc app [db]
-  [:div
-   (navigation db)
-   [:.container
-    [:.content
-     [:h1.title "Sam Brink"]
-     [:section.section
-      (featured-project db)]
-     [:section.section
-      [:.projects-listing
-       (project-listing db)]]
-     [:section.section
-      [:.about-me
-       (about-me db)]]
-     [:section.section
-      [:.contact-me
-       (contact-me db)]]]]])
+(def pages
+  {::home       featured-project
+   ::projects   project-listing
+   ::about-me   about-me
+   ::contact-me contact-me})
+
+(rum/defcs app < (rum/local ::home ::current-page)
+  [{*page ::current-page} db]
+  (let [page @*page]
+    [:div.root
+     (navigation db *page)
+     [:.container
+      [:.content
+       [:h1.title (str/capitalize (name page))]
+       [:section.section.container-page
+        (for [[k page-comp] pages]
+          [:.container-page-inner
+           {:class (when (= page k)
+                     ["active"])}
+           (when (= page k)
+             (page-comp db))])]
+       (when-not (= page ::contact-me)
+         [:section.section
+          [:.contact-me
+           (contact-me db)]])]]]))
 
 (rum/mount (app state)
            (.getElementById js/document "app"))
