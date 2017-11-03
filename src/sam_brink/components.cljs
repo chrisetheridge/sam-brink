@@ -85,7 +85,7 @@
 
 (rum/defc home-post
   [db]
-  (let [{:keys [title image
+  (let [{:project/keys [title image
                 description image-caption]} (:featured-project db)]
     [:section.hero
      [:.hero.hero-body
@@ -100,43 +100,61 @@
        [:.subtitle.hero-description
         [:p description]]]]]))
 
+(rum/defc project-card
+  [*open-project {:project/keys [id image description title] :as project}]
+  [:.project-card {:key id}
+   [:.column
+    [:.card
+     [:.card-image
+      [:figure {:class ["image" "is-1by1"]}
+       [:img {:src (util/static-project-image image)}]]]
+     [:.card-content
+      [:h1.title title]
+      [:p
+       [:a.button.more-info-button
+        {:on-click #(reset! *open-project id)}
+        "View more"]]]]]
+   #_(when (= id @*open-project)
+     [:.modal.is-active
+      [:.modal-background
+       {:on-click #(reset! *open-project nil)}]
+      [:.modal-card
+       [:header.modal-card-head
+        [:p.modal-card-title title]
+        [:button.delete {:on-click #(reset! *open-project nil)}]]
+       [:section.modal-card-body
+        [:.content.is-text
+         [:figure {:class ["image" "is-4x2"]}
+          [:img {:src (util/static-project-image image)}]]
+         [:p description]]]
+       [:footer.modal-card-foot]]])])
+
+(rum/defc full-project [*open-project {:project/keys [id image description title] :as project}]
+  [:.full-project-container {:key id}
+   [:.content.is-text
+    [:h1.project-header
+     [:a.button.is-small.no-border
+      {:on-click #(reset! *open-project nil)}
+      "← Back"]
+     [:span.title title]]
+    [:figure.figure.image.is-16by9
+     [:img {:src (util/static-project-image image)}]]
+    [:p {:dangerouslySetInnerHTML {:__html description}}]]])
+
 (rum/defcs project-listing < (rum/local nil ::open-project)
   (rum/local nil ::index)
   [{*open-project ::open-project
     *index        ::index}
    {projects :projects :as db}]
   [:.container
-   (let [count (count projects)]
-     (for [row (partition-all 3 projects)]
-       [:.columns
-        (for [{:keys [id image description title]} row
-              :let   [close-fn #(reset! *open-project nil)]]
-          (list
-           [:.column {:key id}
-            [:.card
-             [:.card-image
-              [:figure {:class ["image" "is-4x2"]}
-               [:img {:src (util/static-image image)}]]]
-             [:.card-content
-              [:h1.title title]
-              [:.content description]
-              [:a.button.is-warning.more-info-button
-               {:on-click #(reset! *open-project id)}
-               "Info"]]]]
-           (when (= id @*open-project)
-             [:.modal.is-active
-              [:.modal-background
-               {:on-click close-fn}]
-              [:.modal-card
-               [:header.modal-card-head
-                [:p.modal-card-title title]
-                [:button.delete {:on-click close-fn}]]
-               [:section.modal-card-body
-                [:.content.is-text
-                 [:figure {:class ["image" "is-4x2"]}
-                  [:img {:src (util/static-image image)}]]
-                 [:p description]]]
-               [:footer.modal-card-foot]]])))]))
-   [:nav.pagination.is-right
-    [:a.pagination-previous "Previous"]
-    [:a.pagination-next "Next"]]])
+   (prn @*open-project)
+   (let [projects-by-id (->> (map (juxt :project/id identity) projects)
+                             (into {}))]
+     (if-some [project (get projects-by-id @*open-project)]
+       (full-project *open-project project)
+       (let [count (count projects)]
+         (for [row (partition-all 3 projects)]
+           [:.columns
+            (map #(rum/with-key
+                    (project-card *open-project %)
+                    (:project/id %)) row)]))))])

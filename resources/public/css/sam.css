@@ -18,3 +18,20 @@
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+
+.card-image {
+    min-height: 300px;
+    min-width: 350px;
+}
+
+.project-header {
+    display: inline-flex;
+}
+
+.project-header > .button {
+    margin: 10px;
+}
+
+.no-border {
+    border: none;
+}
