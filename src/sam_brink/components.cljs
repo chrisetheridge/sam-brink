@@ -75,7 +75,7 @@
       {:class (when @*active? ["is-active"])}
       [:.navbar-start]
       [:.navbar-end
-       (for [{:keys [title key]} (:pages db)
+       (for [{:page/keys [title key]} (:pages db)
              :let                [active? (= page key)]]
          [:a.navbar-item
           {:on-click (change-page-fn key)}
