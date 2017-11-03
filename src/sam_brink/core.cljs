@@ -27,23 +27,43 @@
   {:projects         projects
    :featured-project (nth projects 2)})
 
-(rum/defc project-listing [db]
+(rum/defcs project-listing < (rum/local nil ::open-project)
+  [{*open-project ::open-project} db]
   [:.container
    [:.content.has-text
     (util/random-str 20)]
    [:.columns
-    (for [{:keys [id image description title]} (:projects db)]
-      [:.column {:key id}
-       [:.card
-        [:.card-image
-         [:figure {:class ["image" "is-4x2"]}
-          [:img {:src (util/static-image image)}]]]
-        [:.card-content
-         [:h1.title title]
-         [:.content description]
-         [:a.button.is-warning.more-info-button "Info"]]]])]])
+    (for [{:keys [id image description title]} (:projects db)
+          :let [close-fn #(reset! *open-project nil)]]
+      (list
+       [:.column {:key id}
+        [:.card
+         [:.card-image
+          [:figure {:class ["image" "is-4x2"]}
+           [:img {:src (util/static-image image)}]]]
+         [:.card-content
+          [:h1.title title]
+          [:.content description]
+          [:a.button.is-warning.more-info-button
+           {:on-click #(reset! *open-project id)}
+           "Info"]]]]
+       (when (= id @*open-project)
+           [:.modal.is-active
+            [:.modal-background
+             {:on-click close-fn}]
+            [:.modal-card
+             [:header.modal-card-head
+              [:p.modal-card-title title]
+              [:button.delete {:on-click close-fn}]]
+             [:section.modal-card-body
+              [:.content.is-text
+               [:figure {:class ["image" "is-4x2"]}
+                [:img {:src (util/static-image image)}]]
+               [:p description]]]
+             [:footer.modal-card-foot]]])))]])
 
-(rum/defc featured-project [db]
+(rum/defc featured-project
+  [db]
   (let [{:keys [title image
                 description image-caption]} (:featured-project db)]
     [:section.hero
