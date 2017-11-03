@@ -13,3 +13,8 @@
     height: 0px;
     visibility: hidden;
 }
+
+.card {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}

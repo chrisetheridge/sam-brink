@@ -1,36 +1,28 @@
-# sam-brink
-
-FIXME: Write a one-line description of your library/project.
+# Sam Brink personal website
 
 ## Overview
 
-FIXME: Write a paragraph about the library/project and highlight its goals.
+Website for artist portfolio. 
 
-## Setup
+Written in Clojurescript, compiled to to Javascript, hosted on Github pages.
 
-To get an interactive development environment run:
+## Building
 
-    lein figwheel
+Make sure you have [leiningen](https://leiningen.org/) installed.
 
-and open your browser at [localhost:3449](http://localhost:3449/).
-This will auto compile and send all changes to the browser without the
-need to reload. After the compilation process is complete, you will
-get a Browser Connected REPL. An easy way to try it is:
+Autoloading and local serving is provided by [figwheel](https://github.com/bhauman/lein-figwheel).
 
-    (js/alert "Am I connected?")
+```bash
+git clone git@github.com:chris-etheridge/sam-brink
+cd sam-brink
 
-and you should see an alert in the browser window.
+# for dev - autoload compiled js and css using 
+lein figwheel dev
 
-To clean all compiled files:
-
-    lein clean
-
-To create a production build run:
-
-    lein do clean, cljsbuild once min
-
-And open your browser in `resources/public/index.html`. You will not
-get live reloading, nor a REPL. 
+# for production / minified build
+# outputs to resources/public/js/
+lein cljsbuild once min
+```
 
 ## License
 
