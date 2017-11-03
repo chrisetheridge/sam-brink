@@ -58,7 +58,7 @@
   [{*active? ::active?} db *page]
   (let [change-page-fn (fn [page]
                          #(reset! *page page))
-        page @*page]
+        page           @*page]
     [:.navbar
      [:.navbar-brand
       [:a.navbar-item
@@ -66,7 +66,7 @@
        [:img {:class ["image" ""]
               :src   (util/static-image "hand.png")}]]
       [:button.button.navbar-burger
-       {:on-click #(swap! *active? not)
+       {:on-click     #(swap! *active? not)
         :on-touch-end #(swap! *active? not)}
        [:span]
        [:span]
@@ -76,7 +76,7 @@
       [:.navbar-start]
       [:.navbar-end
        (for [{:keys [title key]} (:pages db)
-             :let [active? (= page key)]]
+             :let                [active? (= page key)]]
          [:a.navbar-item
           {:on-click (change-page-fn key)}
           title])]]]))
@@ -101,34 +101,42 @@
         [:p description]]]]]))
 
 (rum/defcs project-listing < (rum/local nil ::open-project)
-  [{*open-project ::open-project} db]
+  (rum/local nil ::index)
+  [{*open-project ::open-project
+    *index        ::index}
+   {projects :projects :as db}]
   [:.container
-   [:.columns
-    (for [{:keys [id image description title]} (:projects db)
-          :let [close-fn #(reset! *open-project nil)]]
-      (list
-       [:.column {:key id}
-        [:.card
-         [:.card-image
-          [:figure {:class ["image" "is-4x2"]}
-           [:img {:src (util/static-image image)}]]]
-         [:.card-content
-          [:h1.title title]
-          [:.content description]
-          [:a.button.is-warning.more-info-button
-           {:on-click #(reset! *open-project id)}
-           "Info"]]]]
-       (when (= id @*open-project)
-           [:.modal.is-active
-            [:.modal-background
-             {:on-click close-fn}]
-            [:.modal-card
-             [:header.modal-card-head
-              [:p.modal-card-title title]
-              [:button.delete {:on-click close-fn}]]
-             [:section.modal-card-body
-              [:.content.is-text
-               [:figure {:class ["image" "is-4x2"]}
-                [:img {:src (util/static-image image)}]]
-               [:p description]]]
-             [:footer.modal-card-foot]]])))]])
+   (let [count (count projects)]
+     (for [row (partition-all 3 projects)]
+       [:.columns
+        (for [{:keys [id image description title]} row
+              :let   [close-fn #(reset! *open-project nil)]]
+          (list
+           [:.column {:key id}
+            [:.card
+             [:.card-image
+              [:figure {:class ["image" "is-4x2"]}
+               [:img {:src (util/static-image image)}]]]
+             [:.card-content
+              [:h1.title title]
+              [:.content description]
+              [:a.button.is-warning.more-info-button
+               {:on-click #(reset! *open-project id)}
+               "Info"]]]]
+           (when (= id @*open-project)
+             [:.modal.is-active
+              [:.modal-background
+               {:on-click close-fn}]
+              [:.modal-card
+               [:header.modal-card-head
+                [:p.modal-card-title title]
+                [:button.delete {:on-click close-fn}]]
+               [:section.modal-card-body
+                [:.content.is-text
+                 [:figure {:class ["image" "is-4x2"]}
+                  [:img {:src (util/static-image image)}]]
+                 [:p description]]]
+               [:footer.modal-card-foot]]])))]))
+   [:nav.pagination.is-right
+    [:a.pagination-previous "Previous"]
+    [:a.pagination-next "Next"]]])
