@@ -1,7 +1,7 @@
 (ns sam-brink.state)
 
 (def projects
-  (take 7 (cycle  [{:project/id          7
+  (->> [{:project/id          7
                                :project/title       "Exquisite corpse"
                                :project/image       "project_exquisite_corpse.jpg"
                                :project/description
@@ -79,7 +79,8 @@ The concept behind this campaign was to simply put our target in the shoes of a 
 <p>
 <p>The packaging consists of an extra-length, wrap-around label which encapsulates the soap and is then sealed with a sticker containing all the relevant details and information, as well as featuring a helpful list of the natural remedies each soap provides. The design is simple, time-efficient, and light on the wallet, however, still pleasing to the eye, fulfilling all of the client’s requirements.</p>
 <p>View the full project which includes my process and conceptualisation on <a href='https://behance.net/gallery/58062741/zoetic-soaps.</p>'>Behance</a></p>"
-                               :project/date "8 April 2017"}])))
+                               :project/date "8 April 2017"}]
+       ))
 
 (defonce *state
   (atom {:projects         projects

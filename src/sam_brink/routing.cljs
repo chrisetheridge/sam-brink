@@ -1,7 +1,7 @@
 (ns sam-brink.routing
   (:require
    [rum.core :as rum]
-   [sam-brink.util :as util]
+
    [sam-brink.state :as state]))
 
 (defonce ^:private *current-route (atom nil))

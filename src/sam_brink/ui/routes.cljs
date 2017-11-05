@@ -1,10 +1,10 @@
 (ns sam-brink.ui.routes
   (:require
-   [sam-brink.ui.pages.home :as pages.home]
-   [sam-brink.ui.pages.projects :as pages.projects]
+   [sam-brink.ui.core :as ui.core]
    [sam-brink.ui.pages.contact-me :as pages.contact-me]
+   [sam-brink.ui.pages.home :as pages.home]
    [sam-brink.ui.pages.my-story :as pages.my-story]
-   [sam-brink.ui.core :as ui.core]))
+   [sam-brink.ui.pages.projects :as pages.projects]))
 
 (def routes
   (->> [{:route/label     "Home"
@@ -23,6 +23,7 @@
          :route/match     "#/contact-me"
          :route/component pages.contact-me/page
          :route/key       ::contact-me}]
+       ;; wrap each component with the container wrapper
        (map (fn [route]
               (update route :route/component
                        (fn [c]

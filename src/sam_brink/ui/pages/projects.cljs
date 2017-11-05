@@ -1,8 +1,6 @@
 (ns sam-brink.ui.pages.projects
   (:require
    [rum.core :as rum]
-   [clojure.string :as str]
-   [sam-brink.routing :as routing]
    [sam-brink.util :as util]))
 
 (rum/defc project-card

@@ -1,10 +1,8 @@
 (ns sam-brink.core
   (:require
-   [rum.core :as rum]
-   [sam-brink.util :as util]
+   [sam-brink.routing :as routing]
    [sam-brink.state :as state]
-   [sam-brink.ui.routes :as routes]
-   [sam-brink.routing :as routing]))
+   [sam-brink.ui.routes :as routes]))
 
 (enable-console-print!)
 

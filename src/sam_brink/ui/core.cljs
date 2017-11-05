@@ -1,9 +1,8 @@
 (ns sam-brink.ui.core
   (:require
    [rum.core :as rum]
-   [clojure.string :as str]
-   [sam-brink.util :as util]
-   [sam-brink.routing :as routing]))
+   [sam-brink.routing :as routing]
+   [sam-brink.util :as util]))
 
 (rum/defcs navigation < (rum/local false ::active?)
   [{*active? ::active?} db current-route]
