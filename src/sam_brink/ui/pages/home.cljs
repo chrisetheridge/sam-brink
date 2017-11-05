@@ -4,16 +4,15 @@
    [sam-brink.util :as util]))
 
 (rum/defc featured-post [db]
-  (let [{:project/keys [title image
-                        description image-caption]} (:featured-project db)]
+  (let [{:project/keys [title image description excerpt]} (:featured-project db)]
     [:section.hero
      [:.hero.hero-body
       [:.container
        [:.hero-image
         [:figure {:class ["image" "is-4by2"]}
-         [:img {:src (util/static-image image)}]]
+         [:img {:src (util/static-project-image image)}]]
         [:.hero-image-caption
-         [:p.small image-caption]]]
+         [:p.small excerpt]]]
        [:h2.title.hero-title title]
        [:h5.subtitle "Featured project"]
        [:.subtitle.hero-description

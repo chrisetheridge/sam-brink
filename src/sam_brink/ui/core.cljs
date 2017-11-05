@@ -25,10 +25,11 @@
       {:class (when @*active? ["is-active"])}
       [:.navbar-start]
       [:.navbar-end
-       (for [{:route/keys [label key]} (:routes db)
-             :let                     [active? (= (:route/key current-route) key)]]
-         [:a.navbar-item
-          {:on-click (change-page-fn key)}
+       (for [{:route/keys [label url key]} (:routes db)
+             :let [active? (= (:route/key current-route) key)
+                   kn      (name key)]]
+         [:a.navbar-item {:key (str "nav/" kn)
+                          :on-click (change-page-fn (str "/#/" kn))}
           label])]]]))
 
 (rum/defc container-wrapper [db component]

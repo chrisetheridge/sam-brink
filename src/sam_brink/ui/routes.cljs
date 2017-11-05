@@ -8,19 +8,19 @@
 
 (def routes
   (->> [{:route/label     "Home"
-         :route/match     "/"
+         :route/match     #"/|#/"
          :route/component pages.home/page
          :route/key       ::home}
         {:route/label     "Projects"
          :route/component pages.projects/project-listing-page
-         :route/match     "/projects"
+         :route/match     "#/projects"
          :route/key       ::projects}
         {:route/label     "My story"
-         :route/match     "/my-story"
+         :route/match     "#/my-story"
          :route/component pages.my-story/page
          :route/key       ::my-story}
         {:route/label     "Contact"
-         :route/match     "/contact-me"
+         :route/match     "#/contact-me"
          :route/component pages.contact-me/page
          :route/key       ::contact-me}]
        (map (fn [route]

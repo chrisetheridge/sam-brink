@@ -9,6 +9,6 @@
 (enable-console-print!)
 
 (defn ^:export start! []
-  (prn "starting")
+  (prn "[core] starting")
   (routing/start-routes! routes/routes state/*state)
   (routing/refresh))

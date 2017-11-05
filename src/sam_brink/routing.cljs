@@ -11,19 +11,21 @@
 (defn location []
   js/document.location)
 
-(defn path
-  ([] (path (location)))
+(defn location-hash
+  ([] (location-hash (location)))
   ([l]
-   (.-pathname l)))
+   (.-hash l)))
 
-(defonce *path (atom (path)))
+(defonce *hash (atom (location-hash)))
 
 (defn add-route!
   [{key :route/key :as r}]
   (swap! *routes assoc key r))
 
 (defn route-matches? [{:route/keys [match]} loc]
-  (= match (path loc)))
+  (cond
+    (regexp? match) (re-matches match (location-hash loc))
+    :else           (= match (location-hash loc))))
 
 (defn- current-route []
   (let [l (location)]
@@ -36,10 +38,10 @@
     (do
       (reset! *current-route key)
       (let [l (location)
-            p (path l)]
-        (reset! *path p)
-        (prn (str "[routing] rendering route"  key))
-        (prn :state (:routes (state/current-state)))
+            h (location-hash l)]
+        (prn "[routing] starting with location hash " h)
+        (reset! *hash h)
+        (prn (str "[routing] rendering route " key))
         (rum/mount (component (state/current-state)) (js/document.getElementById "app"))))
     (throw (ex-info "No route found for " (.-href (location))
                     {:location (location)}))))
@@ -55,5 +57,5 @@
 (defn start-routes! [routes *db]
   (swap! *db assoc :routes routes)
   (doseq [{:route/keys [match] :as r} routes]
-    (prn (str "[routes] adding route" match))
+    (prn (str "[routes] adding route " match))
     (add-route! r)))
