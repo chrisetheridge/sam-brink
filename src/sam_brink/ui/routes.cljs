@@ -8,7 +8,7 @@
 
 (def routes
   (->> [{:route/label     "Home"
-         :route/match     #"/|#/"
+         :route/match  #"/|#/home"
          :route/component pages.home/page
          :route/key       ::home}
         {:route/label     "Projects"

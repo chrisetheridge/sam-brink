@@ -43,7 +43,7 @@
         (reset! *hash h)
         (prn (str "[routing] rendering route " key))
         (rum/mount (component (state/current-state)) (js/document.getElementById "app"))))
-    (throw (ex-info "No route found for " (.-href (location))
+    (throw (ex-info (str "No route found for " (location-hash (location)))
                     {:location (location)}))))
 
 (defn go! [url]

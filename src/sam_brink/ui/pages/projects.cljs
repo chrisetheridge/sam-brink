@@ -2,6 +2,7 @@
   (:require
    [rum.core :as rum]
    [clojure.string :as str]
+   [sam-brink.routing :as routing]
    [sam-brink.util :as util]))
 
 (rum/defc project-card
@@ -37,7 +38,8 @@
     *index        ::index}
    db]
   [:.container
-   (prn @*open-project)
+   [:.content.is-text
+    [:h1.title "My projects"]]
    (let [projects (:projects db)
          projects-by-id (->> (map (juxt :project/id identity) projects)
                              (into {}))]
@@ -45,7 +47,7 @@
        (full-project *open-project project)
        (let [count (count projects)]
          (for [row (partition-all 3 projects)]
-           [:.columns
+           [:.columns {:key (str "column/" (hash row))}
             (map #(rum/with-key
                     (project-card *open-project %)
                     (:project/id %)) row)]))))])
