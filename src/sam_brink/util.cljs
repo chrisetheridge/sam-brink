@@ -6,6 +6,9 @@
 (defn static-project-image [path]
   (static-image (str "projects/" path)))
 
+(defn static-download [path]
+  (str "/downloads/" path))
+
 (defn random-str [n]
   (->> (take n (cycle ["Lorem ipsum doelm mit ex zit muipet"]))
        (apply str)))
