@@ -35,19 +35,21 @@
                    @*routes))))
 
 (defn render-route []
-  (if-let [[_ {:route/keys [key component] :as r}] (current-route)]
+  (if-let [[_ {:route/keys [key component label] :as r}] (current-route)]
     (do
       (reset! *current-route key)
       (let [l (location)
             h (location-hash l)]
-        (prn "[routing] starting with location hash " h)
+        (prn "[routing] starting with location hash " (pr-str h))
         (reset! *hash h)
         (prn (str "[routing] rendering route " key))
+        (set! js/document.title (str "Sam Brink - " label))
         (rum/mount (component (state/current-state)) (js/document.getElementById "app"))))
     (throw (ex-info (str "No route found for " (location-hash (location)))
                     {:location (location)}))))
 
-(defn go! [url]
+(defn go!
+  [url]
   (js/history.pushState nil "" url)
   (render-route))
 
@@ -57,6 +59,6 @@
 
 (defn start-routes! [routes *db]
   (swap! *db assoc :routes routes)
-  (doseq [{:route/keys [match] :as r} routes]
-    (prn (str "[routes] adding route " match))
+  (doseq [{:route/keys [key] :as r} routes]
+    (prn (str "[routing] adding route " key))
     (add-route! r)))
