@@ -11,7 +11,7 @@
     [:.navbar
      [:.navbar-brand
       [:a.navbar-item
-       {:on-click (change-page-fn ::home)}
+       {:on-click (change-page-fn "/")}
        [:img {:class ["image" ""]
               :src   (util/static-image "hand.png")}]]
       [:button.button.navbar-burger
