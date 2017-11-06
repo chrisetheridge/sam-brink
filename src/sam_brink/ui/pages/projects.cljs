@@ -41,8 +41,7 @@
    db]
   [:.container
    [:.content.is-text
-    [:h1.title "My projects"]
-    [:p "Click a project to view more"]]
+    [:h1.title "My projects"]]
    (let [projects (:projects db)
          projects-by-id (->> (map (juxt :project/id identity) projects)
                              (into {}))]
