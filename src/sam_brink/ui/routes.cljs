@@ -4,11 +4,14 @@
    [sam-brink.ui.pages.contact-me :as pages.contact-me]
    [sam-brink.ui.pages.home :as pages.home]
    [sam-brink.ui.pages.my-story :as pages.my-story]
-   [sam-brink.ui.pages.projects :as pages.projects]))
+   [sam-brink.ui.pages.projects :as pages.projects]
+   [clojure.string :as str]))
 
 (def routes
   (->> [{:route/label     "Home"
-         :route/match  #"/|#/home"
+         :route/match (fn [location-hash]
+                        (or (str/blank? location-hash)
+                            (re-matches #"/|#/home" location-hash)))
          :route/component pages.home/page
          :route/key       ::home}
         {:route/label     "Projects"

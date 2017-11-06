@@ -25,6 +25,7 @@
 (defn route-matches? [{:route/keys [match]} loc]
   (cond
     (regexp? match) (re-matches match (location-hash loc))
+    (fn? match)     (match (location-hash loc))
     :else           (= match (location-hash loc))))
 
 (defn- current-route []
