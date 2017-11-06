@@ -16,7 +16,7 @@
                                :project/image       "project_adobe.jpg"
                                :project/description
                                "<p>The brief was to delve into my hard earned wisdom and life lessons, and celebrate these through illustration or photography. I was asked to identify the advice which I would like to communicate, and create a series of three images which pack a punch and visually portray the advice I have to give.</p>
-<p>For many years, the most popular sea stories and fables of the ocean have depicted sea creatures and the oceans as a hostile and dangerous place. Sea creatures are depicted as cruel beasts which should be confronted with aggression as well as caution. My key insight for this project is that there are very few ocean related stories which shed a positive light on the relationship between humans and animals co-existing. </p>
+<p>For many years, the most popular sea stories and fables of the ocean have depicted sea creatures and the oceans as a hostile and dangerous place. Sea creatures are depicted as cruel beasts which should be confronted with aggression as well as caution. My key insight for this project is thatethere are very few ocean related stories which shed a positive light on the relationship between humans and animals co-existing. </p>
 <p>I wanted to make this project personal as well, and this was a major reason for choosing the ocean and the lessons which I have learnt from it. As a child, I avoided the ocean and swimming in any body of water because of the fear of what was lurking beneath me. As I got older though, my attitude became the complete opposite. I saw this brief as an opportunity to convey my own narrative and experiences.</p>
 <p>The solution to the issue which I discovered through my key insight, is to portray scenes which emphasise and highlight how humans rely on and need the ocean and its creatures. These images, in order to pack the punch, need to be detailed and interesting to look at in order to hold viewer’s attention, while also focusing on the ocean aspect of the theme.</p>
 <p>View the full project which includes my process and conceptualisation on <a href='https://behance.net/gallery/52498795/D-AD-New-Blood-Awards-2017-Adobe-Brief'>Behance</a></p>"
@@ -35,7 +35,7 @@ The overall tone of the publication was practical, self-made and, very precise. 
 <p>View the full project which includes my process and conceptualisation on <a href='https://behance.net/gallery/55750257/ISTD-Makers-Brief-A-Stitch-In-Time'>Behance</a></p>"
                                :project/date "16 Jun 2016"}
                               {:project/id          4
-                               :project/title       "Change for a loosey"
+                               :project/title       "Change for a Loosey"
                                :project/excerpt "Published in 2016 with 80 signed and editioned copies, Parallelogram: Volume 1 embodied an anthology of visual narrative work and illustration by BA Creative Brand Communications - Copywriters, Multimedia Designers and Visual Communicators.
 
 This year, Vega School exhibited work at the Open Book Comics Fest in Cape Town again, in the form of the Parallelogram: Volume 2 publication.The publication encouraged students to be subversive and to explore the nature of self-publishing. The brief gives free reign over content and responded critically to topics such as sex, race, gender, addiction, romance, politics and more. "
@@ -49,7 +49,7 @@ This year, Vega School exhibited work at the Open Book Comics Fest in Cape Town 
                                :project/date "16 Jun 2016"}
                               {:project/id 3
                                :project/image "project_red_apple_dyslexia_association_awareness.jpg"
-                               :project/title "Red apple dyslexia association awareness"
+                               :project/title "Red Apple Dyslexia Association"
                                :project/excerpt ""
                                :project/description
                                "<p>For this brief, I collaborated to create a powerful social awareness campaign for a South African brand, that would add value to society. Choosing to create an awareness campaign for the Red Apple Dyslexia Association, we aimed to highlight their efforts to support, educate and train those suffering from dyslexia and those living with dyslexia sufferers.
@@ -80,7 +80,8 @@ The concept behind this campaign was to simply put our target in the shoes of a 
 <p>The packaging consists of an extra-length, wrap-around label which encapsulates the soap and is then sealed with a sticker containing all the relevant details and information, as well as featuring a helpful list of the natural remedies each soap provides. The design is simple, time-efficient, and light on the wallet, however, still pleasing to the eye, fulfilling all of the client’s requirements.</p>
 <p>View the full project which includes my process and conceptualisation on <a href='https://behance.net/gallery/58062741/zoetic-soaps.</p>'>Behance</a></p>"
                                :project/date "8 April 2017"}]
-       ))
+       (sort-by :id)
+       reverse))
 
 (defonce *state
   (atom {:projects         projects

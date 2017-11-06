@@ -12,11 +12,15 @@
       [:figure {:class ["image" "is-1by1"]}
        [:img {:src (util/static-project-image image)}]]]
      [:.card-content
-      [:h1.title title]
-      [:p
-       [:a.button.more-info-button
-        {:on-click #(reset! *open-project id)}
-        "View more"]]]]]])
+      [:.media
+       [:.media-left
+        [:figure.image.is-48x48
+         [:img {:src (util/static-project-image (str "0" id ".png"))}]]]
+       [:.media-content
+        [:p.title.is-4.is-left title]
+        [:a.button.is-info
+         {:on-click #(reset! *open-project id)}
+         "View"]]]]]]])
 
 (rum/defc full-project [*open-project {:project/keys [id image description title] :as project}]
   [:.full-project-container {:key id}
@@ -37,18 +41,19 @@
    db]
   [:.container
    [:.content.is-text
-    [:h1.title "My projects"]]
+    [:h1.title "My projects"]
+    [:p "Click a project to view more"]]
    (let [projects (:projects db)
          projects-by-id (->> (map (juxt :project/id identity) projects)
                              (into {}))]
      (if-some [project (get projects-by-id @*open-project)]
        (full-project *open-project project)
        (let [count (count projects)]
-         (for [row (partition-all 3 projects)]
+         (for [row (partition-all 3  projects)]
            [:.columns {:key (str "column/" (hash row))}
-            (map #(rum/with-key
-                    (project-card *open-project %)
-                    (:project/id %)) row)]))))])
+            (for [project row]
+              [:.column.is-one-third {:key (str "project-card/" (:project/id project))}
+               (project-card *open-project project)])]))))])
 
 (rum/defc project-listing-page [db]
   (project-listing db))
