@@ -25,7 +25,12 @@
       [:img {:src (util/static-image "pages/home_1.jpg")}]]]
     [:.column
      [:.content.is-text.is-two-thirds
-      [:p "Hi there! My name is Sam Brink and I am a young creative from Cape Town, South African. This portfolio consists of my most recent and proudest curated visual communication work. "]
+      [:p "My name is Sam Brink and I am a young creative from Cape Town, South African. This portfolio consists of my most recent and proudest curated visual communication work. "]
+      [:.columns
+       (for [i (range 1 4)]
+         [:.column {:key (str "home-image-vector/" i)}
+          [:figure.figure.image
+           [:img {:src (util/static-image (str "vector_" i ".png"))}]]])]
       [:p "My strengths are illustration and branding, but I have a particular knack for creating things with my hands. I draw a lot of my inspiration from the  irregular beauty and patterns in nature, bold colours and the more simple things in life. I believe that hand made things are the most true and personalised expression of one’s creative ability."]]]]
    [:.featured-post-container
     [:h2 "Featured project"]
