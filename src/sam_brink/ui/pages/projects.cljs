@@ -22,7 +22,8 @@
          {:on-click #(reset! *open-project id)}
          "View"]]]]]]])
 
-(rum/defc full-project [*open-project {:project/keys [id image description title] :as project}]
+(rum/defc full-project
+  [*open-project {:project/keys [id image-wide image description title] :as project}]
   [:.full-project-container {:key id}
    [:.content.is-text
     [:h1.project-header
@@ -30,8 +31,8 @@
       {:on-click #(reset! *open-project nil)}
       "← Back"]
      [:span.title title]]
-    [:figure.figure.image.is-16by9
-     [:img {:src (util/static-project-image image)}]]
+    [:figure.figure.image.is-3by2
+     [:img {:src (util/static-project-image image-wide)}]]
     [:p {:dangerouslySetInnerHTML {:__html description}}]]])
 
 (rum/defcs project-listing < (rum/local nil ::open-project)
