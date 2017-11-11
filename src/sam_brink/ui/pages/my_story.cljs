@@ -25,8 +25,10 @@
      [:li "Appreciation for traditional ways"]]]
    [:.content.is-text.download-cv-pdf
     [:a.button.is-info
-     {:src (util/static-download "Sam Brink CV 2017.pdf")}
-     "Download CV"]]])
+     {:href (util/static-download "cv.pdf")
+      :target "_blank"
+      :title "Download my CV"}
+     "Download my CV"]]])
 
 (rum/defc page [db]
   (my-story db))
